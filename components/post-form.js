@@ -1,5 +1,9 @@
-export function PostForm() {
-  const [state, formAction] = useActionState(createPost, {});
+"use client";
+import { useFormState } from "react-dom";
+import { FormSubmit } from "@/components/form-submit";
+
+export function PostForm({ action }) {
+  const [state, formAction] = useFormState(action, {});
 
   return (
     <>
@@ -10,7 +14,7 @@ export function PostForm() {
           <input type="text" id="title" name="title" />
         </p>
         <p className="form-control">
-          <label htmlFor="image">Image URL</label>
+          <label htmlFor="image">Image</label>
           <input
             type="file"
             accept="image/png, image/jpeg"
@@ -25,6 +29,13 @@ export function PostForm() {
         <p className="form-actions">
           <FormSubmit />
         </p>
+        {state.errors && (
+          <ul className="form-errors">
+            {state.errors.map((error) => (
+              <li key={error}>{error}</li>
+            ))}
+          </ul>
+        )}
       </form>
     </>
   );
